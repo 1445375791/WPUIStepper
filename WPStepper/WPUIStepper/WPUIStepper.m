@@ -125,7 +125,7 @@ typedef enum : NSInteger {
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
     if (_delegate && [_delegate respondsToSelector:@selector(stepperValueDidChangeWithKeyBoard:inputChangeValue:)]) {
-        [_delegate stepperValueDidChangeWithKeyBoard:self inputChangeValue:string];
+        return [_delegate stepperValueDidChangeWithKeyBoard:self inputChangeValue:string];
     }
     return YES;
 }

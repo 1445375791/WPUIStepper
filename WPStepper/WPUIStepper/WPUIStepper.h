@@ -26,7 +26,7 @@
 /**
  输入变化 只要输入就会触发
  */
-- (void)stepperValueDidChangeWithKeyBoard:(WPUIStepper *)stepper inputChangeValue:(NSString *)inputChangValue;
+- (BOOL)stepperValueDidChangeWithKeyBoard:(WPUIStepper *)stepper inputChangeValue:(NSString *)inputChangValue;
 
 
 /**

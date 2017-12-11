@@ -49,8 +49,13 @@
     NSLog(@"开始输入");
 }
 
--(void)stepperValueDidChangeWithKeyBoard:(WPUIStepper *)stepper inputChangeValue:(NSString *)inputChangValue {
+- (BOOL)stepperValueDidChangeWithKeyBoard:(WPUIStepper *)stepper inputChangeValue:(NSString *)inputChangValue {
     NSLog(@"以前的值%@  正在改变值 %@", [NSNumber numberWithFloat:stepper.stepperValue], inputChangValue);
+    if ([@"0123456789" containsString:inputChangValue]) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 - (void)stepperDidEndEditingWithKeyBoard:(WPUIStepper *)stepper {
