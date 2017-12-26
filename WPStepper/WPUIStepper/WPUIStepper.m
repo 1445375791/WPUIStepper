@@ -7,10 +7,9 @@
 //
 
 #import "WPUIStepper.h"
-
 typedef enum : NSInteger {
-    WPUIStepperSignTypeMinu = 10000, //减号的tag
-    WPUIStepperSignTypeAdd = 10001 // 加号的tag
+    WPUIStepperSignTypeMinu = 100000, //减号的tag
+    WPUIStepperSignTypeAdd = 100001 // 加号的tag
 } WPUIStepperSignType;
 
 @interface WPUIStepper ()<UITextFieldDelegate>
@@ -81,21 +80,24 @@ typedef enum : NSInteger {
     
     NSString *numStr = _showNumTextField.text;
     CGFloat resultNum = [numStr floatValue];
+    WPUIStepperClickType clickType = WPUIStepperClickTypeMinu;
     if (button.tag == WPUIStepperSignTypeMinu) {
         resultNum -= self.stepValue;
         if (resultNum < self.minValue) {
             resultNum = self.isCycle ? self.maxValue : self.minValue;
         }
+        clickType = WPUIStepperClickTypeMinu;
     }else if (button.tag == WPUIStepperSignTypeAdd) {
         resultNum += self.stepValue;
         if (resultNum > self.maxValue) {
             resultNum =  self.isCycle ? self.minValue : self.maxValue;
         }
+        clickType = WPUIStepperClickTypeAdd;
     }
     _showNumTextField.text = [NSString stringWithFormat:@"%@", [NSNumber numberWithFloat:resultNum]];
     
-    if (_delegate && [_delegate respondsToSelector:@selector(stepperDidClickSign:currentValue:)]) {
-        [_delegate stepperDidClickSign:self currentValue:_showNumTextField.text];
+    if (_delegate && [_delegate respondsToSelector:@selector(stepperDidClickSign:currentValue:clickType:)]) {
+        [_delegate stepperDidClickSign:self currentValue:_showNumTextField.text clickType:clickType];
     }
 }
 
@@ -123,9 +125,14 @@ typedef enum : NSInteger {
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (self.onlyIntType) {
+        if (range.length == 0 && ![@"0123456789" containsString:string]) {
+            return NO;
+        }
+    }
     
     if (_delegate && [_delegate respondsToSelector:@selector(stepperValueDidChangeWithKeyBoard:inputChangeValue:)]) {
-        return [_delegate stepperValueDidChangeWithKeyBoard:self inputChangeValue:string];
+       return [_delegate stepperValueDidChangeWithKeyBoard:self inputChangeValue:string];
     }
     return YES;
 }
@@ -189,10 +196,12 @@ typedef enum : NSInteger {
 #pragma mark - Default
 
 - (void)setShowNumColor:(UIColor *)showNumColor {
+    _showNumColor = showNumColor;
     _showNumTextField.textColor = showNumColor;
 }
 
 - (void)setStepSignColor:(UIColor *)stepSignColor {
+    _stepSignColor = stepSignColor;
     [_minuSignButton setTitleColor:stepSignColor forState:UIControlStateNormal];
     [_addSignButton setTitleColor:stepSignColor forState:UIControlStateNormal];
 }
@@ -203,10 +212,12 @@ typedef enum : NSInteger {
 }
 
 - (void)setNumFont:(UIFont *)numFont {
+    _numFont = numFont;
     _showNumTextField.font = numFont;
 }
 
 - (void)setSignUseImage:(BOOL)signUseImage {
+    _signUseImage = signUseImage;
     if (signUseImage) {
         [_minuSignButton setTitle:@"" forState:UIControlStateNormal];
         [_addSignButton setTitle:@"" forState:UIControlStateNormal];

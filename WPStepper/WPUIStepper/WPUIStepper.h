@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum : NSUInteger {
+    WPUIStepperClickTypeMinu,   // 减
+    WPUIStepperClickTypeAdd,    // 加
+} WPUIStepperClickType;
+
 @class WPUIStepper;
 @protocol WPUIStepperDelegate <NSObject>
-
-
 /**
  当直接在输入框中输入数字会触发此方法
  */
@@ -32,8 +35,9 @@
 /**
  点击加号或者减号按钮直接触发
  @param currentValue 当前输入框中的值
+ @param clickType 点击类型
  */
-- (void)stepperDidClickSign:(WPUIStepper *)stepper currentValue:(NSString *)currentValue;
+- (void)stepperDidClickSign:(WPUIStepper *)stepper currentValue:(NSString *)currentValue clickType:(WPUIStepperClickType) clickType;
 
 /**
  输入的信息不满足设置要求时会触发
