@@ -48,7 +48,6 @@ typedef enum : NSInteger {
         _showNumTextField.layer.borderWidth = 0.7;
         _showNumTextField.layer.borderColor = self.stepBorderColor.CGColor;
         _showNumTextField.delegate = self;
-        _showNumTextField.text = [NSString stringWithFormat:@"%@", [NSNumber numberWithFloat:self.minValue]];
         _showNumTextField.font = self.numFont;
         [self addSubview:_showNumTextField];
         
@@ -103,6 +102,7 @@ typedef enum : NSInteger {
 
 - (void)setInitValue {
     _minValue = 1;
+    _defaultValue = _minValue;
     _maxValue = 100;
     _stepValue = 1;
     _signSize = 16;
@@ -214,6 +214,28 @@ typedef enum : NSInteger {
 - (void)setNumFont:(UIFont *)numFont {
     _numFont = numFont;
     _showNumTextField.font = numFont;
+}
+
+- (void)setMaxValue:(CGFloat)maxValue {
+    _maxValue = maxValue;
+}
+
+- (void)setMinValue:(CGFloat)minValue {
+    _minValue = minValue;
+    if (_defaultValue <= _minValue) {
+        _defaultValue = _minValue;
+        _showNumTextField.text = [NSString stringWithFormat:@"%@", [NSNumber numberWithFloat:_minValue]];
+    } else {
+        if (_defaultValue > _maxValue) {
+            _defaultValue = _maxValue;
+        }
+        _showNumTextField.text = [NSString stringWithFormat:@"%@", [NSNumber numberWithFloat:_defaultValue]];
+    }
+}
+
+- (void)setDefaultValue:(CGFloat)defaultValue {
+    _defaultValue = defaultValue;
+    _showNumTextField.text = [NSString stringWithFormat:@"%@", [NSNumber numberWithFloat:_defaultValue]];
 }
 
 - (void)setSignUseImage:(BOOL)signUseImage {

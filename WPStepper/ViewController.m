@@ -24,6 +24,7 @@
     
     WPUIStepper *stepper = [[WPUIStepper alloc] initWithFrame:CGRectMake(80, 80, 120, 30)];
     stepper.minValue = 1;
+    stepper.defaultValue = 3;
     stepper.maxValue = 1232;
     stepper.delegate = self;
     stepper.onlyIntType = YES;

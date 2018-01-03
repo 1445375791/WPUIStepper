@@ -57,6 +57,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, assign, readonly) CGFloat stepperValue; // 结果值
 
+@property (nonatomic, assign) CGFloat defaultValue; //默认显示的值  如果不设置的话 默认显示最小值 
+
 @property (nonatomic, assign) BOOL onlyIntType; // 是否输入的值必须为整型 默认为YES
 
 @property (nonatomic, assign) BOOL isCycle; // 是否循环 当达到最大值或者最小值得时候是否会循环 默认为NO
